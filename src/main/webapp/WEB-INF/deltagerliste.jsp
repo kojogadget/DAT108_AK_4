@@ -17,40 +17,17 @@
 	<h2>Deltagerliste</h2>
 	<table>
 		<tr>
-			<th>Kjønn</th>
-			<th align="left">Navn</th>
-			<th align="left">Mobil</th>
+		    <th>Kjønn</th>
+		    <th align="left">Navn</th>
+		    <th align="left">Mobil</th>
 		</tr>
-            <tr>
-				<td align="center">&#9792;</td>
-				<td>Anne Panne</td>
-				<td>234 56 789</td>
-			</tr>
-		
-            <tr>
-				<td align="center">&#9794;</td>
-				<td>Arne Arnesen</td>
-				<td>901 23 456</td>
-			</tr>
-		
-            <tr>
-				<td align="center">&#9794;</td>
-				<td>Lars-Petter Helland</td>
-				<td>123 45 679</td>
-			</tr>
-		
-            <tr>
-				<td align="center">&#9794;</td>
-				<td>Per Viskelær</td>
-				<td>345 34 534</td>
-			</tr>
-		
-            <tr>
-				<td align="center">&#9792;</td>
-				<td>Xx-x Xxx</td>
-				<td>123 21 378</td>
-			</tr>
-
+		<c:forEach var="deltager" items="${deltagerListe}">
+		<tr>
+		    <td align="center">${deltager.kjonn == "mann" ? "&#9794;" : "&#9792;"}</td>
+		    <td>${deltager.fornavn}&nbsp;${deltager.etternavn}</td>
+		    <td>${deltager.mobil}</td>
+		</tr>
+		</c:forEach>
 	</table>
 </body>
 </html>

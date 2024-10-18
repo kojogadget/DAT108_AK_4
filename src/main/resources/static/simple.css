@@ -624,3 +624,7 @@ progress::-moz-progress-bar {
 progress:indeterminate::-moz-progress-bar {
   background-color: var(--accent-bg);
 }
+
+.skjemaKjonn {
+  display: inline-flex;
+}
