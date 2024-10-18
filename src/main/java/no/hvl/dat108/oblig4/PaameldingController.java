@@ -1,6 +1,5 @@
 package no.hvl.dat108.oblig4;
 
-import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,17 +12,32 @@ import jakarta.validation.Valid;
 
 @Controller
 public class PaameldingController {
-	
+	    
+	/**
+     * Henter påmeldingsskjemaet.
+     * 
+     * @return String - navnet på visningen for påmeldingsskjemaet.
+     */
 	@GetMapping("/paamelding")
-	public String paamelding() {
+	public String getPaamelding() {
 		return "paameldingSkjema";
 	}
 
+	/**
+     * Prosesserer påmeldingsskjemaet når det sendes inn.
+     * Hvis det er valideringsfeil, blir brukeren omdirigert tilbake til påmeldingsskjemaet med feilmeldinger.
+     * Hvis mobilnummeret allerede er registrert, blir brukeren også omdirigert med en feilmelding.
+     * Hvis alt er ok, blir deltageren lagret og brukeren omdirigert til bekreftelsessiden.
+     * 
+     * @param deltager         Det validerte deltager-objektet fra skjemaet.
+     * @param bindingResult    Resultat av valideringen, brukes for å sjekke om det finnes feil.
+     * @param re               RedirectAttributes-objektet som brukes til å sende flash-attributter mellom requests.
+     * @return String - omdirigering til enten bekreftelsessiden eller tilbake til påmeldingsskjemaet ved feil.
+     */
 	@PostMapping("/paameldt")
-	public String paameldtPost(Model model,
-					@Valid @ModelAttribute("deltager") Deltager deltager,
-					BindingResult bindingResult,
-					RedirectAttributes re) {
+	public String postPaameldt(@Valid @ModelAttribute("deltager") Deltager deltager,
+									BindingResult bindingResult,
+									RedirectAttributes re) {
 
 		re.addFlashAttribute("fornavn", deltager.getFornavn());
 		re.addFlashAttribute("etternavn", deltager.getEtternavn());
@@ -44,25 +58,19 @@ public class PaameldingController {
 		}
 
 		Deltagerene.deltagereMap.put(deltager.getMobil(), deltager);
-		Deltagerene.alleDeltagere.add(deltager);
+		Deltagerene.deltagereList.add(deltager);
 		return "redirect:paameldt";
 	}
 
+	/**
+     * Viser bekreftelsessiden etter vellykket påmelding.
+     * Hvis påmeldingen ikke er fullført (ingen attributter i modellen), omdirigeres brukeren tilbake til påmeldingsskjemaet.
+     * 
+     * @param model Model-objektet som brukes til å sende data til visningen.
+     * @return String - navnet på visningen for bekreftelsessiden eller omdirigering til påmeldingsskjemaet.
+     */
 	@GetMapping("/paameldt")
-	public String paameldtGet(Model model) {
-		if (model.getAttribute("fornavn") == null) return "redirect:paamelding";
-
-		return "paameldt";
-	}
-
-	@GetMapping("/deltagerliste")
-	public String deltagerliste(Model model) {
-		List<Deltager> sorterteDeltagere = Deltagerene.alleDeltagere.stream()
-																	.sorted(Comparator.comparing(Deltager::getFornavn)
-																			.thenComparing(Deltager::getEtternavn))
-																	.toList();
-		model.addAttribute("deltagerListe", sorterteDeltagere);
-
-		return "deltagerliste";
+	public String getPaameldt(Model model) {
+		return model.getAttribute("fornavn") == null ? "redirect:paamelding" : "paameldt";
 	}
 }

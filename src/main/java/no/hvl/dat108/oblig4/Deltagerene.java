@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class Deltagerene {
 
-	public static List<Deltager> alleDeltagere = new ArrayList<>();
+	public static List<Deltager> deltagereList = new ArrayList<>();
 	public static Map<String, Deltager> deltagereMap = new HashMap<>();
 
 	static {
@@ -17,11 +17,11 @@ public class Deltagerene {
 		Deltager d4 = new Deltager("Dole", "Knutsen", "94444444", "Passord1!", "mann");
 		Deltager d5 = new Deltager("Doffen", "Jonsen", "95555555", "Passord1!", "mann");
 
-		alleDeltagere.add(d1);
-		alleDeltagere.add(d2);
-		alleDeltagere.add(d3);
-		alleDeltagere.add(d4);
-		alleDeltagere.add(d5);
+		deltagereList.add(d1);
+		deltagereList.add(d2);
+		deltagereList.add(d3);
+		deltagereList.add(d4);
+		deltagereList.add(d5);
 
 		deltagereMap.put(d1.getMobil(), d1);
 		deltagereMap.put(d2.getMobil(), d2);
