@@ -10,17 +10,18 @@ import org.junit.jupiter.api.Test;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import no.hvl.dat108.oblig4.model.DeltagerSkjema;
 
 public class DeltagerValideringTest {
 
 	private Validator validator;
-	private Deltager testDeltager;
+	private DeltagerSkjema testDeltager;
 
 	@BeforeEach
 	void setup() {
 		validator = Validation.buildDefaultValidatorFactory().getValidator();
 
-		testDeltager = new Deltager();
+		testDeltager = new DeltagerSkjema();
 		testDeltager.setFornavn("Mikke");
 		testDeltager.setEtternavn("Mus");
 		testDeltager.setMobil("12345678");
@@ -30,7 +31,7 @@ public class DeltagerValideringTest {
 	
 	@Test
 	void testDeltagerHarGyldigeInitVerdier() {
-		Set<ConstraintViolation<Deltager>> violations = validator.validate(testDeltager);
+		Set<ConstraintViolation<DeltagerSkjema>> violations = validator.validate(testDeltager);
 		assertTrue(violations.isEmpty());
 	}
 
@@ -123,7 +124,7 @@ public class DeltagerValideringTest {
 
 
 	private void sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen(String feilmelding) {
-		Set<ConstraintViolation<Deltager>> violations = validator.validate(testDeltager);
+		Set<ConstraintViolation<DeltagerSkjema>> violations = validator.validate(testDeltager);
 
 		assertFalse(violations.isEmpty());
 		assertEquals(1, violations.size());

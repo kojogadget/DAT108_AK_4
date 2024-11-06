@@ -24,7 +24,7 @@
 	</p>
 
 	<fieldset>
-	  <form action="paameldt" method="post" id="form">
+	  <form action="paamelding" method="post" id="form">
 	    <label for="fornavn">Fornavn</label>
 	    <input type="text" 
 		    name="fornavn" 

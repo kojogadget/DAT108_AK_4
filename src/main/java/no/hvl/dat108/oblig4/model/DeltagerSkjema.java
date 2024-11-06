@@ -1,9 +1,9 @@
-package no.hvl.dat108.oblig4;
+package no.hvl.dat108.oblig4.model;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
-public class Deltager {
+public class DeltagerSkjema {
 
 	@Pattern(regexp = "^\\p{L}{2,}((\\s+|-)\\p{L}{2,})*$", 
 		message = "Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn")
@@ -30,16 +30,7 @@ public class Deltager {
 	@NotNull(message = "Kjønn er obligatorisk")
 	private String kjonn;
 
-	public Deltager() {}
-
-	public Deltager(String fornavn, String etternavn, String mobil, String passord,
-			String kjonn) {
-		this.fornavn = fornavn;
-		this.etternavn = etternavn;
-		this.mobil = mobil;
-		this.passord = passord;
-		this.kjonn = kjonn;
-	}
+	public DeltagerSkjema() {}
 
 	public String getFornavn() {
 		return fornavn;
