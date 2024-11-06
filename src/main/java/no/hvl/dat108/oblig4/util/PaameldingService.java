@@ -1,6 +1,5 @@
 package no.hvl.dat108.oblig4.util;
 
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import no.hvl.dat108.oblig4.model.Deltager;
@@ -15,27 +14,17 @@ public class PaameldingService {
 	@Autowired private DeltagerRepo deltagerRepo;
 	
 	/**
-	 * TODO
+	 * Registrerer en deltager basert på input fra {@link DeltagerSkjema}.
+	 * Passordet som er registrert hashes før lagring.
 	 *
-	 * @param deltager
-	 * @return
+	 * @param deltager Ny deltager før lagring.
+	 * @return Deltageren som er registrert i databasen.
 	 */
-	public boolean erRegistrert(DeltagerSkjema deltager) {
-		Optional<Deltager> sok = deltagerRepo.findById(deltager.getMobil());
-	
-		return !sok.isEmpty();
-	};
-
-	/**
-	 * TODO
-	 *
-	 * @param deltager
-	 */
-	public void registrer(DeltagerSkjema deltager) {
+	public Deltager registrer(DeltagerSkjema deltager) {
 		String salt = passordService.genererTilfeldigSalt();
 		String hash = passordService.hashMedSalt(deltager.getPassord(), salt);
 		Passord passord = new Passord(hash, salt);
 
-		deltagerRepo.save(new Deltager(deltager, passord));
+		return deltagerRepo.save(new Deltager(deltager, passord));
 	}
 }

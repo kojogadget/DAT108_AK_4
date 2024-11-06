@@ -30,7 +30,7 @@
 		    name="fornavn" 
 		    autocomplete="off"
 		    autofocus
-		    pattern="^\p{L}{2,}((\s+|-)\p{L}{2,})*$" 
+		    pattern="\s*\p{L}{2,}((\s+|-)\p{L}{2,})*\s*" 
 		    title="Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn"
 		    value="${fornavn}"
 		    required>
@@ -39,7 +39,7 @@
 	    <input type="text" 
 		    name="etternavn" 
 		    autocomplete="off"
-		    pattern="^\p{L}{2,}((-)\p{L}{2,})*$" 
+		    pattern="\s*\p{L}{2,}((-)\p{L}{2,})*\s*" 
 		    title="Tillate tegn er kun bokstaver og enkel bindestrek mellom delnavn"
 		    value="${etternavn}" 
 		    required>
@@ -48,7 +48,7 @@
 	    <input type="text" 
 		    name="mobil" 
 		    autocomplete="off"
-		    pattern="^\d{8}$" 
+		    pattern="\s*\d{8}\s*" 
 		    title="Nummer er kun gyldig ved 8 siffer"
 		    value="${mobil}"
 		    required>
@@ -81,8 +81,9 @@
 	    </div>
 
 	    <br>
-	    <input type="submit" value="Meld meg på">
+	    <input type="submit" value="Meld meg på"> 
 	  </form>
+	  Hvis du er påmeldt: <a href="logginn">Logg inn</a>
 	</fieldset>
   </body>
 </html>

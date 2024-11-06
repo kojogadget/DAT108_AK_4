@@ -14,6 +14,8 @@
 	<title>Deltagerliste</title>
   </head>
   <body>
+      <br>
+	<p>Innlogget som: ${deltager.mobil} / ${deltager.fornavn}&nbsp;${deltager.etternavn}</p>
 	<h2>Deltagerliste</h2>
 	<table>
 		<tr>
@@ -21,13 +23,16 @@
 		    <th align="left">Navn</th>
 		    <th align="left">Mobil</th>
 		</tr>
-		<c:forEach var="deltager" items="${deltagerListe}">
-		<tr>
-		    <td align="center">${deltager.kjonn == "mann" ? "&#9794;" : "&#9792;"}</td>
-		    <td>${deltager.fornavn}&nbsp;${deltager.etternavn}</td>
-		    <td>${deltager.mobil}</td>
+		<c:forEach var="deltagerItem" items="${deltagerListe}">
+		<tr style="${deltagerItem.mobil == deltager.mobil ? "background: green;" : ""}">
+		    <td align="center">${deltagerItem.kjonn == "mann" ? "&#9794;" : "&#9792;"}</td>
+		    <td>${deltagerItem.fornavn}&nbsp;${deltagerItem.etternavn}</td>
+		    <td>${deltagerItem.mobil}</td>
 		</tr>
 		</c:forEach>
 	</table>
+	<form action="loggut" method="post">
+	    <input type="submit" value="Logg ut" />
+	</form>
 </body>
 </html>

@@ -10,8 +10,11 @@ form.addEventListener("submit", () => {
     if (!validerInputFelt(mobil, "Feil format")) return;
     if (!validerInputFelt(passord, "Feil format")) return;
 
-    if (!validerPassord(passord, passordBekreft)) return
+    if (!validerPassord(passord, passordBekreft)) return;
 
+    fornavn.value = formaterNavn(fornavn.value);
+    etternavn.value = formaterNavn(etternavn.value);
+    mobil.value = formaterMobil(mobil.value);
     passordBekreft.remove();
 })
 
@@ -52,5 +55,30 @@ function validerPassord(passord, passordBekreft) {
         return false;
     };
     return true;
+};
+
+/**
+ * Formaterer et navn slik at første bokstav i hvert ord, samt første bokstav etter bindestreker, blir kapitalisert.
+ *
+ * @param {string} navn - Navnet som skal formateres.
+ * @returns {string} Det formaterte navnet med korrekt kapitalisering.
+ */
+function formaterNavn(navn) {
+    const navnReg = /(^|-|\s)(\p{Ll})/gu;
+    navn.toLocaleLowerCase(navigator.language);
+
+    return navn.trim().replace(navnReg, 
+        (_, symbol, tegn) => `${symbol}${tegn.toLocaleUpperCase(navigator.language)}`
+    );
+};
+
+/**
+ * Formaterer et mobilnummer slik at den fjerner alle mellomrom og kun beholder tallene.
+ *
+ * @param {string} mobil - Nummeret som skal formateres.
+ * @returns {string} Det formaterte nummeret.
+ */
+function formaterMobil(mobil) {
+    return mobil.trim().split(" ").join("");
 };
 

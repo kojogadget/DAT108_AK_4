@@ -3,19 +3,25 @@ package no.hvl.dat108.oblig4.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import no.hvl.dat108.oblig4.model.Deltager;
 import no.hvl.dat108.oblig4.model.DeltagerSkjema;
+import no.hvl.dat108.oblig4.util.DeltagerService;
+import no.hvl.dat108.oblig4.util.LogginnService;
 import no.hvl.dat108.oblig4.util.PaameldingService;
 
 @Controller
 public class PaameldingController {
 	@Autowired private PaameldingService registrerService;
+	@Autowired private DeltagerService deltagerService;
+	@Autowired private LogginnService logginnService;
 	    
 	/**
      * Henter påmeldingsskjemaet.
@@ -41,7 +47,8 @@ public class PaameldingController {
 	@PostMapping("/paamelding")
 	public String postPaameldt(@Valid @ModelAttribute("deltager") DeltagerSkjema deltager,
 									BindingResult bindingResult,
-									RedirectAttributes re) {
+									RedirectAttributes re,
+									HttpServletRequest request) {
 
 		re.addFlashAttribute("fornavn", deltager.getFornavn());
 		re.addFlashAttribute("etternavn", deltager.getEtternavn());
@@ -56,12 +63,13 @@ public class PaameldingController {
 			return "redirect:paamelding";
 		}
 
-		if (registrerService.erRegistrert(deltager)) {
+		if (deltagerService.mobilRegistrert(deltager.getMobil())) {
 			re.addFlashAttribute("feilmeldinger", List.of("Mobilnummer er allerede registrert!"));
 			return "redirect:paamelding";
 		}
 		
-		registrerService.registrer(deltager);
+		Deltager regDeltager = registrerService.registrer(deltager);
+		logginnService.loggInnBruker(request, regDeltager);
 		
 		return "redirect:paameldt";
 	}
@@ -74,7 +82,10 @@ public class PaameldingController {
      * @return String - navnet på visningen for bekreftelsessiden eller omdirigering til påmeldingsskjemaet.
      */
 	@GetMapping("/paameldt")
-	public String getPaameldt(Model model) {
-		return model.getAttribute("fornavn") == null ? "redirect:paamelding" : "paameldt";
+	public String getPaameldt(HttpSession session) {
+		if (!logginnService.erBrukerInnlogget(session)) {
+			return "redirect:paamelding";
+		}
+		return "paameldt";
 	}
 }
