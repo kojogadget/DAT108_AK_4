@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -41,15 +43,10 @@ public class DeltagerValideringTest {
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Fornavn er obligatorisk");
 	}
 
-	@Test
-	void testFornavnErUgyldigFormatert() {
-		testDeltager.setFornavn(" Ole");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn");
-		testDeltager.setFornavn("Ole ");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn");
-		testDeltager.setFornavn("O1e");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn");
-		testDeltager.setFornavn("Ole!");
+	@ParameterizedTest
+	@ValueSource(strings = {" Ole", "Ole ", "O1e", "Ole!"})
+	void testFornavnErUgyldigFormatert(String navnFraListe) {
+		testDeltager.setFornavn(navnFraListe);
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver, mellomrom og enkel bindestrek mellom delnavn");
 	}
 
@@ -59,15 +56,10 @@ public class DeltagerValideringTest {
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Etternavn er obligatorisk");
 	}
 
-	@Test
-	void testEtternavnErUgyldigFormatert() {
-		testDeltager.setEtternavn(" Duck");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver og enkel bindestrek mellom delnavn");
-		testDeltager.setEtternavn("Duck ");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver og enkel bindestrek mellom delnavn");
-		testDeltager.setEtternavn("D0ck");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver og enkel bindestrek mellom delnavn");
-		testDeltager.setEtternavn("Duck!");
+	@ParameterizedTest
+	@ValueSource(strings = {" Duck", "Duck ", "D0ck", "Duck!"})
+	void testEtternavnErUgyldigFormatert(String navnFraListe) {
+		testDeltager.setEtternavn(navnFraListe);
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Tillate tegn er kun bokstaver og enkel bindestrek mellom delnavn");
 	}
 
@@ -77,15 +69,10 @@ public class DeltagerValideringTest {
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Mobilnummer er obligatorisk");
 	}
 
-	@Test
-	void testMobilErUgyldigFormatert() {
-		testDeltager.setMobil("123456");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Nummer er kun gyldig ved 8 siffer");
-		testDeltager.setMobil("12345678 ");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Nummer er kun gyldig ved 8 siffer");
-		testDeltager.setMobil(" 12345678");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Nummer er kun gyldig ved 8 siffer");
-		testDeltager.setMobil("abcdefgh");
+	@ParameterizedTest
+	@ValueSource(strings = {"123456", "12345678 ", " 12345678", "abcdefgh"})
+	void testMobilErUgyldigFormatert(String mobilFraListe) {
+		testDeltager.setMobil(mobilFraListe);
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Nummer er kun gyldig ved 8 siffer");
 	}
 
@@ -95,15 +82,10 @@ public class DeltagerValideringTest {
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Passord er obligatorisk");
 	}
 
-	@Test
-	void testPassordErUgyldigFormatert() {
-		testDeltager.setPassord("Passord1");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Passordet må være minst 8 tegn og minimum inneholde en liten og en stor bokstav, et tall og et symbol");
-		testDeltager.setPassord("passord1!");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Passordet må være minst 8 tegn og minimum inneholde en liten og en stor bokstav, et tall og et symbol");
-		testDeltager.setPassord("Passord!");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Passordet må være minst 8 tegn og minimum inneholde en liten og en stor bokstav, et tall og et symbol");
-		testDeltager.setPassord("PASSORD1!");
+	@ParameterizedTest
+	@ValueSource(strings = {"Passord1", "passord1!", "Passord!", "PASSORD1!"})
+	void testPassordErUgyldigFormatert(String passFraListe) {
+		testDeltager.setPassord(passFraListe);
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Passordet må være minst 8 tegn og minimum inneholde en liten og en stor bokstav, et tall og et symbol");
 	}
 
@@ -114,11 +96,10 @@ public class DeltagerValideringTest {
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Kjønn er obligatorisk");
 	}
 
-	@Test
-	void testKjonnErUgyldigFormatert() {
-		testDeltager.setKjonn("annet");
-		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Kjønn kan kun være 'mann' eller 'kvinne' i denne oppgaven");
-		testDeltager.setKjonn("mannlig kvinne");
+	@ParameterizedTest
+	@ValueSource(strings = {"annet", "mannlig kvinne"})
+	void testKjonnErUgyldigFormatert(String kjonnFraListe) {
+		testDeltager.setKjonn(kjonnFraListe);
 		sjekkAtDeltagerErUgyldigMedDenneFeilmeldingen("Kjønn kan kun være 'mann' eller 'kvinne' i denne oppgaven");
 	}
 
