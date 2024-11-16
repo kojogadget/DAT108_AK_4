@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "deltager")
+@Table(schema = "dat108_oblig4", name = "deltager")
 public class Deltager {
 	@Id private String mobil;
 	private String fornavn;

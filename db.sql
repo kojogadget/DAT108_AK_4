@@ -1,4 +1,6 @@
-DROP TABLE deltager;
+DROP SCHEMA IF EXISTS dat108_oblig4 CASCADE;
+CREATE SCHEMA dat108_oblig4;
+SET search_path TO dat108_oblig4;
 
 CREATE TABLE deltager (
     mobil CHARACTER (8) PRIMARY KEY,
